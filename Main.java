@@ -11,32 +11,20 @@ public class Main {
     public static void main(String[] args) throws IOException {
         StockItem stockItem;
 
+        try(BufferedReader stockFile = new BufferedReader(new FileReader("src/Stock.txt"))) {
+            String stockData = stockFile.readLine();
 
-        stockItem= new StockItem("bread", 0.87,100);
-        stockList.addStock(stockItem);
+            while (stockData != null) {
+                String[] data = stockData.split(",");
+                stockItem = new StockItem(data[0], Double.parseDouble(data[1]),Integer.parseInt(data[2]));
+                stockList.addStock(stockItem);
+                stockData = stockFile.readLine();
+            }
+        }
 
-        stockItem = new StockItem("cake", 2.87,100);
-        stockList.addStock(stockItem);
-
-        stockItem = new StockItem("milk", 2.10,3);
-        stockList.addStock(stockItem);
-        stockItem = new StockItem("rice", 1.10,30);
-        stockList.addStock(stockItem);
-        stockItem = new StockItem("pasta", 2.27,1);
-        stockList.addStock(stockItem);
-        stockItem = new StockItem("roll", 1.00,4);
-        stockList.addStock(stockItem);
-        stockItem = new StockItem("chicken", 1.87,40);
-        stockList.addStock(stockItem);
-        stockItem = new StockItem("ham", 2.17,50);
-        stockList.addStock(stockItem);
-
-        stockItem = new StockItem("lettuce", 4.45,7);
-        stockList.addStock(stockItem);
 
 
         Basket myBasket = new Basket("Joe");
-        sellItem(myBasket,"roll", 4);
         sellItem(myBasket,"rice", 2);
         sellItem(myBasket,"pasta", 2);
         sellItem(myBasket,"bread", 2);
@@ -60,27 +48,20 @@ public class Main {
         System.out.println(stockList);
 
 
-        try(FileWriter stockFile = new FileWriter("src/Stock.txt")) {
-            for(int i = 0; i < stockList.priceList().keySet().size(); i++) {
-                stockFile.write(String.format("%s, %s, %s\n",stockList.priceList().keySet().toArray()[i], stockList.priceList().values().toArray()[i], stockList.inStock().values().toArray()[i]));
-            }
 
-        }
+        writeStockValues();
 
-
-  
-
-
-
-
-
-//        System.out.println(stockList.priceList().keySet());
-//        System.out.println(stockList.priceList().values());
-//        System.out.println(stockList.inStock().values());
 
 
     }
+    public static void writeStockValues() throws IOException{
+        try(FileWriter stockFile = new FileWriter("src/Stock.txt")) {
+            for(int i = 0; i < stockList.priceList().keySet().size(); i++) {
+                stockFile.write(String.format("%s,%s,%s\n",stockList.priceList().keySet().toArray()[i], stockList.priceList().values().toArray()[i], stockList.inStock().values().toArray()[i]));
+            }
 
+        }
+    }
 
     public static int sellItem(Basket basket, String item, int quantity){
         StockItem stockItem = stockList.get(item);
