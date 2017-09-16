@@ -53,4 +53,8 @@ public class Basket {
         }
         return String.format("\tTotal cost of %s's basket is: %.2f",name,totalCost);
     }
+
+    public String getName() {
+        return name;
+    }
 }

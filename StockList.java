@@ -63,7 +63,7 @@ public class StockList {
 
     @Override
     public String toString(){
-        System.out.println("\nStock List:");
+        System.out.println("\n\nStock List:");
         double totalCost = 0.0;
         for(Map.Entry<String,StockItem> item : list.entrySet()){
             StockItem stockItem = item.getValue();
