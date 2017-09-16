@@ -22,19 +22,16 @@ public class Basket {
     }
 
     public int removeFromBasket(StockItem item, int quantity){
-        if(item != null && quantity > 0){
-            int inBasket = list.getOrDefault(item, 0);
-            int newQuantity = inBasket - quantity;
-
-            if( newQuantity > 0){
-                list.put(item,quantity);
-                return quantity;
-            }else if(newQuantity ==0){
-                list.remove(item);
-                return quantity;
-            }
+        if(item != null && quantity > 0  && (list.getOrDefault(item, 0) - quantity) > 0){
+            list.put(item,quantity);
+            return quantity;
+        } else if(item != null && quantity > 0  && (list.getOrDefault(item, 0) - quantity) == 0){
+            list.remove(item);
+            return quantity;
+        } else{
+            return 0;
         }
-        return 0;
+
     }
 
     public void clearBasket(){
@@ -47,12 +44,13 @@ public class Basket {
 
     @Override
     public String toString() {
-        String s = "\nShopping basket " + name + " contains " + list.size() + (list.size() == 1 ? " product\n" : " products\n");
+        System.out.printf("\nShopping basket %s contains %s %s\n",name,list.size(),list.size() == 1 ? "product" : "products");
+
         double totalCost = 0.0;
         for(Map.Entry<StockItem, Integer> item: list.entrySet()){
-            s = s + item.getKey() + ". " + item.getValue() + " have purchased\n";
+            System.out.printf("%s\n\t%d %s have been purchased.\n", item.getKey(),item.getValue(),item.getKey().getName());
             totalCost += item.getKey().getPrice() * item.getValue();
         }
-        return s + "Total cost " + String.format("%.2f",totalCost);
+        return String.format("\tTotal cost of %s's basket is: %.2f",name,totalCost);
     }
 }
