@@ -1,10 +1,14 @@
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 public class Main {
 
     private static StockList stockList = new StockList();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         StockItem stockItem;
 
 
@@ -55,7 +59,28 @@ public class Main {
 
         System.out.println(stockList);
 
+
+        try(FileWriter stockFile = new FileWriter("src/Stock.txt")) {
+            for(int i = 0; i < stockList.priceList().keySet().size(); i++) {
+                stockFile.write(String.format("%s, %s, %s\n",stockList.priceList().keySet().toArray()[i], stockList.priceList().values().toArray()[i], stockList.inStock().values().toArray()[i]));
+            }
+
+        }
+
+
+  
+
+
+
+
+
+//        System.out.println(stockList.priceList().keySet());
+//        System.out.println(stockList.priceList().values());
+//        System.out.println(stockList.inStock().values());
+
+
     }
+
 
     public static int sellItem(Basket basket, String item, int quantity){
         StockItem stockItem = stockList.get(item);

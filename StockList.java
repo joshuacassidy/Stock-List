@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,6 +27,23 @@ public class StockList {
 
     }
 
+    public Map<String, Integer> inStock() {
+        Map<String,Integer> itemsInStock = new LinkedHashMap<>();
+        for (Map.Entry<String,StockItem> item: list.entrySet()){
+            itemsInStock.put(item.getKey(),item.getValue().availableQuantity());
+        }
+        return Collections.unmodifiableMap(itemsInStock);
+    }
+
+
+    public Map<String,Double> priceList(){
+        Map<String,Double> prices = new LinkedHashMap<>();
+        for (Map.Entry<String,StockItem> item: list.entrySet()){
+            prices.put(item.getKey(),item.getValue().getPrice());
+        }
+        return Collections.unmodifiableMap(prices);
+    }
+
     public int reserveStock(String item, int quantity){
         StockItem inStock = list.get(item);
         return inStock != null && quantity > 0  ? inStock.reserveStock(quantity) : 0;
@@ -39,6 +57,8 @@ public class StockList {
     public StockItem get(String key){
         return list.get(key);
     }
+
+
 
 
     @Override
